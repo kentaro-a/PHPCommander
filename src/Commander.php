@@ -1,5 +1,5 @@
 <?php
-namespace PHPCommander;
+namespace KentaroA\PHPCommander;
 
 class Commander {
 	private $_commands = [];

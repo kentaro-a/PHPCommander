@@ -1,8 +1,8 @@
 <?php
-namespace PHPCommander;
+namespace KentaroA\PHPCommander;
 
 class FlgParser {
-	private $_flgs;
+	private $_flgs = [];
 	private $_command_name;
 
 	public function __construct(array $argv) {

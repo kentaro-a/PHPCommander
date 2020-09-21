@@ -1,5 +1,5 @@
 <?php
-namespace PHPCommander;
+namespace KentaroA\PHPCommander;
 
 class CommandNotFoundException extends \Exception {
 	public function __construct(string $command_name, \Exception $previous=null) {

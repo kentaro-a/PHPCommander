@@ -1,5 +1,5 @@
 <?php
-namespace PHPCommander;
+namespace KentaroA\PHPCommander;
 
 class Command {
 	private $_command_name;
@@ -10,6 +10,9 @@ class Command {
 	private $_BR = "\n";
 
 	public function __construct(string $command_name, ProcedureInterface $procedure, Flgs $flgs=null, string $description="") {
+		if (preg_match("/^\-{1,2}[^-]+$/", $command_name)) {
+			throw new InvalidParameterException("Invalid command_name [{$command_name}].");
+		}
 		$this->_command_name = $command_name;
 		$this->_procedure = $procedure;
 		$this->_flgs = is_null($flgs) ? new Flgs() : $flgs;

@@ -1,7 +1,29 @@
 {
+	"name": "kentaro-a/phpcommander",
+	"type": "library",
+	"description": "PHP Command line interface. Easy to handle flags and options.",
+	"homepage": "https://github.com/kentaro-a/PHPCommander",
+	"keywords": ["phpcommander", "php commandline interface", "php cli", "php flag", "php command", "php argv"],
+	"authors": [
+		{
+			"name": "kentaro-a",
+			"email": "minminzemi1121@yahoo.co.jp"
+		}
+	],
 	"autoload": {
 		"psr-4": {
-			"PHPCommander\\": "src/"
+			"KentaroA\\PHPCommander\\": "src/",
+			"KentaroA\\Tests\\": "tests/"
 		}
-	}
+	},
+	"require": {
+		"php": ">=7.0"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^9.3"
+	},
+	"scripts": {
+        "test": "./vendor/bin/phpunit"
+    },
+	"license": "MIT"
 }

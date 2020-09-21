@@ -1,5 +1,5 @@
 <?php
-namespace PHPCommander;
+namespace KentaroA\PHPCommander;
 
 class Flgs {
 	private $_flgs;
@@ -12,7 +12,7 @@ class Flgs {
 
 	public function set(string $flg, string $help): Flgs {
 		if (!preg_match("/^\-{1,2}[^-]+$/", $flg)) {
-			throw new InvalidFlgException($flg);
+			throw new InvalidParameterException("Flg [{$flg}] must be started with - or --.");
 		}
 		$this->_flgs[$flg] = $help;
 		return $this;
