@@ -15,7 +15,7 @@ $command_echo = new Command(
 	"Simple echo parameter",
 );
 // you can add other command by pushing into $commands or using add method like $cli->addCommand($command).
-$commands[] = $command_hello;
+$commands[] = $command_echo;
 
 // Make instance.
 $cli = new Commander($argv, $commands);
