@@ -1,6 +1,6 @@
 <?php
 /*
- * $ php example.php hello --param "hello world"
+ * $ php example.php echo --param "hello world"
  * $ php example.php get_license
  */
 
@@ -33,7 +33,7 @@ $command_echo = new Command(
 	]),
 	"Simple echo parameter",
 );
-$commands[] = $command_hello;
+$commands[] = $command_echo;
 
 $command_get_license = new Command(
 	"get_license",
