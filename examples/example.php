@@ -25,7 +25,7 @@ class GetLicenseProcedure implements ProcedureInterface {
 }
 
 $commands = [];
-$command_hello = new Command(
+$command_echo = new Command(
 	"echo",
 	new EchoProcedure(),
 	new Flgs([
