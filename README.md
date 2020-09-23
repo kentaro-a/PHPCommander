@@ -3,6 +3,13 @@ Easy to handle flags and options which passed through by $argv.
 Flags and options have to be start with "-" or "--".
 If you've already have any classes and you'd like to make something like CLI batches with it, PHPCommander makes it easy.
 
+# Requirements
+- php >= 7.1
+
+# Install
+```
+$ composer require kentaro-a/phpcommander
+```
 
 # How To Use
 You can make Procedure which implements [ProcedureInterface](https://github.com/kentaro-a/PHPCommander/blob/master/src/ProcedureInterface.php).
