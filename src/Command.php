@@ -27,6 +27,10 @@ class Command {
 		return $this->_procedure;
 	}
 
+	public function getFlgs(): Flgs {
+		return $this->_flgs;
+	}
+
 	public function hasFlg(string $flg): bool {
 		return $this->_flgs->isExist($flg);
 	}
@@ -42,8 +46,8 @@ class Command {
 		$help[] = $this->getDescription();
 		$help[] = $this->_HELP_SEPERATOR;
 		$help[] = "Options: ";
-		foreach ($this->_flgs->getAll() as $_flg=>$_help) {
-			$help[] = "{$_flg}: {$_help}";
+		foreach ($this->_flgs->getAll() as $_flg=>$_f) {
+			$help[] = "{$_flg}: {$_f->getHelp()}";
 		}
 		$help[] = $this->_HELP_SEPERATOR;
 		$help[] = $this->_BR;

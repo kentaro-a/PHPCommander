@@ -2,10 +2,11 @@
 require_once(__DIR__ ."/../vendor/autoload.php");
 use KentaroA\PHPCommander\Commander;
 use KentaroA\PHPCommander\Command;
+use KentaroA\PHPCommander\Flg;
 use KentaroA\PHPCommander\Flgs;
 use KentaroA\PHPCommander\FlgParser;
-use KentaroA\PHPCommander\CommandNotFoundException;
 use KentaroA\PHPCommander\ProcedureInterface;
+use KentaroA\PHPCommander\ValidatorNotEmptyString;
 
 class ProcedureVoid implements ProcedureInterface {
 	public function __invoke(array $flgs=[]) {
@@ -102,7 +103,8 @@ class CommanderTest extends PHPUnit\Framework\TestCase {
 	}
 
 	public function test_invoke() {
-
+		$flg1 = new Flg("--flg1", true, "sample flg[not empty]", [new ValidatorNotEmptyString("Flg --flg1 doesn't permit blank.")]);
+		$flg2 = new Flg("--flg2", false, "sample flg", [new ValidatorNotEmptyString("Flg --flg2 doesn't permit blank.")]);
 		$command1 = new Command(
 			"command1",
 			new ProcedureVoid(),
@@ -113,7 +115,8 @@ class CommanderTest extends PHPUnit\Framework\TestCase {
 			"command2",
 			new ProcedureReturn(),
 			new Flgs([
-				"-f" => "filename",
+				$flg1,
+				$flg2,
 			]),
 			"desc2",
 		);
@@ -130,12 +133,12 @@ class CommanderTest extends PHPUnit\Framework\TestCase {
 		$_argv = [
 			"scriptname.php",
 			"command2",
-			"-f",
+			"--flg1",
 			"path/to/testfile",
 		];
 		$cli = new Commander($_argv, [$command1,$command2]);
 		$ret = $cli->invoke();
-		$this->assertEquals(["f"=>"path/to/testfile"],$ret);
+		$this->assertEquals(["flg1"=>"path/to/testfile"],$ret);
 	}
 
 }
