@@ -12,7 +12,7 @@ $ composer require kentaro-a/phpcommander
 ```
 
 # How To Use
-You can make Procedure which implements [ProcedureInterface](https://github.com/kentaro-a/PHPCommander/blob/master/src/ProcedureInterface.php).
+### You can make Procedure which implements [ProcedureInterface](https://github.com/kentaro-a/PHPCommander/blob/master/src/ProcedureInterface.php).
 
 ```
 class EchoProcedure implements ProcedureInterface {
@@ -21,6 +21,21 @@ class EchoProcedure implements ProcedureInterface {
 		echo $flgs["param"] ."\n";
 	}
 }
+```
+
+### Make Flags for command
+Use Flg(string $flg, bool $must=false, string $help="", array $validators=[]) to make Flag.
+you can make custom validator class like preset validator ValidatorNotEmptyString.
+
+| param | desc |
+----|---- 
+| $flg | require, this must start with - or -- |
+| $must | optional default=false, if true check for being passed flg in cli args. |
+| $help | optional default="", help text to be shown. |
+| $validators | optional default=[], an array of sub classes of Validator to validate flg. |
+
+```
+$flg1 = new Flg("--param", true, "my parameter", [new ValidatorNotEmptyString("Flg --param doesn't permit blank.")]);
 ```
 
 
