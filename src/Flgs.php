@@ -2,19 +2,16 @@
 namespace KentaroA\PHPCommander;
 
 class Flgs {
-	private $_flgs;
+	private $_flgs=[];
 
 	public function __construct(array $flgs=[]) {
-		foreach ($flgs as $flg=>$help) {
-			$this->set($flg, $help);
+		foreach ($flgs as $flg) {
+			$this->set($flg);
 		}
 	}
 
-	public function set(string $flg, string $help): Flgs {
-		if (!preg_match("/^\-{1,2}[^-]+$/", $flg)) {
-			throw new InvalidParameterException("Flg [{$flg}] must be started with - or --.");
-		}
-		$this->_flgs[$flg] = $help;
+	public function set(Flg $flg): Flgs {
+		$this->_flgs[$flg->getFlg()] = $flg;
 		return $this;
 	}
 

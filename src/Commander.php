@@ -42,7 +42,9 @@ class Commander {
 
 		$cmd = $this->_getCommand($command_name);
 		if (is_null($cmd)) {
-			throw new CommandNotFoundException($command_name);
+			echo "Command [$command_name] not found.\nRegistered commands are\n";
+			echo $this->getHelp();
+			die();
 		}
 		$procedure = $cmd->getProcedure();
 
@@ -50,14 +52,29 @@ class Commander {
 			echo $cmd->getHelp();
 			die();
 		}
+
 		$options = [];
-		foreach ($this->_flg_parser->getFlgs() as $flg=>$v) {
-			if ($cmd->hasflg($flg)) {
-				$key = preg_replace("/^\-{1,2}/", "", $flg);
-				$options[$key] = $v;
+		foreach ($cmd->getFlgs()->getAll() as $_flg=>$_f) {
+			if (isset($this->_flg_parser->getFlgs()[$_flg])) {
+				$vali_errors = 0;
+				foreach ($_f->getValidators() as $validator) {
+					// validation
+					$ok = $validator($_flg, $this->_flg_parser->getFlgs()[$_flg]);
+					if (!$ok) {
+						$vali_errors++;
+					}
+				}
+				if ($vali_errors > 0) die();
+
+				$key = preg_replace("/^\-{1,2}/", "", $_flg);
+				$options[$key] = $this->_flg_parser->getFlgs()[$_flg];
+
+			} else {
+				if ($_f->isMust()) {
+					echo "Flg {$_flg} is required.";
+				}
 			}
 		}
-
 		return call_user_func($procedure, $options);
 	}
 

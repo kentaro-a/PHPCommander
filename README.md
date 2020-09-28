@@ -12,7 +12,23 @@ $ composer require kentaro-a/phpcommander
 ```
 
 # How To Use
-You can make Procedure which implements [ProcedureInterface](https://github.com/kentaro-a/PHPCommander/blob/master/src/ProcedureInterface.php).
+
+### Make Flags for command
+Use new Flg(string $flg, bool $must=false, string $help="", array $validators=[]) to make Flag.
+you can make custom validator class like preset validator ValidatorNotEmptyString.
+
+| param | desc |
+----|---- 
+| $flg | require, this must start with - or -- |
+| $must | optional default=false, if true check for being passed flg in cli args. |
+| $help | optional default="", help text to be shown. |
+| $validators | optional default=[], an array of sub classes of Validator to validate flg. |
+
+```
+$flg1 = new Flg("--param", true, "my parameter", [new ValidatorNotEmptyString("Flg --param doesn't permit blank.")]);
+```
+
+### You can make Procedure which implements [ProcedureInterface](https://github.com/kentaro-a/PHPCommander/blob/master/src/ProcedureInterface.php).
 
 ```
 class EchoProcedure implements ProcedureInterface {
@@ -23,29 +39,49 @@ class EchoProcedure implements ProcedureInterface {
 }
 ```
 
+### Make Command
+After making Procedure you can set it into Command.
+Using new Command(string $command_name, ProcedureInterface $procedure, Flgs $flgs=null, string $description="").
 
-After making Procedure you can set it into Command and make Commander which contains Command[s].
+| param | desc |
+----|---- 
+| $command_name | require, this must not start with - or -- |
+| $procedure | require, procedure to be called when command passed. |
+| $flgs | optional default=null, Flgs class contains an array of Flg classes. |
+| $description | optional default="", description text to be shown in help. |
+
 ```
-// Make command which can handles options like [php xxx.php echo --param !sample!!"]
 $command_echo = new Command(
 	"echo",
 	new EchoProcedure(),
-	new Flgs([
-		"--param" => "sample parameter",
-	]),
+	new Flgs([$flg1]),
 	"Simple echo parameter",
 );
-// you can add other command by pushing into $commands or using add method like $cli->addCommand($command).
-$commands[] = $command_echo;
-
-// Make instance.
-$cli = new Commander($argv, $commands);
 ```
+
+### Add Commands into Commander and invoke registered command.
 
 Commander::invoke obtains command name and options from $argv then invokes relevant Procedure::__invoke().
 ```
+// Make instance.
+$cli = new Commander($argv, [$command_echo]);
+
+// you can also add other command by pushing into $commands or using add method like $cli->addCommand($command).
+
 // Invoke procedure related on command name passed by $argv
 $ret = $cli->invoke();
+```
+
+
+# Show help.
+You can show registered command list without any parameters.
+```
+$ php batch.php
+```
+
+You can also pass the reserved flg after command_name like -h or --help to show help.
+```
+$ php batch.php echo -h(--help)
 ```
 
 # Detail
